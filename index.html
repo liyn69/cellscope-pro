@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CellScope Pro — 活细胞监测自动化控制平台</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --blue-50: #eff8ff;
+    --blue-100: #dbeafe;
+    --blue-200: #bfdbfe;
+    --blue-300: #93c5fd;
+    --blue-400: #60a5fa;
+    --blue-500: #3b82f6;
+    --blue-600: #2563eb;
+    --blue-700: #1d4ed8;
+    --cyan-100: #cffafe;
+    --cyan-200: #a5f3fc;
+    --cyan-400: #22d3ee;
+    --cyan-500: #06b6d4;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --gray-900: #0f172a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #fff;
+    color: var(--gray-800);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    backdrop-filter: blur(16px);
+    background: rgba(255,255,255,0.85);
+    border-bottom: 1px solid rgba(147,197,253,0.3);
+    padding: 0 5%;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 18px;
+    background: linear-gradient(135deg, var(--blue-600), var(--cyan-500));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-logo svg { width: 28px; height: 28px; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a {
+    text-decoration: none; font-size: 14px; font-weight: 500;
+    color: var(--gray-600);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--blue-600); }
+  .nav-cta {
+    padding: 8px 20px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--blue-500), var(--cyan-500));
+    color: white; font-size: 14px; font-weight: 600;
+    text-decoration: none; transition: opacity 0.2s;
+    border: none; cursor: pointer;
+  }
+  .nav-cta:hover { opacity: 0.9; }
+
+  /* ===== HERO ===== */
+  #hero {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #f0f7ff 0%, #e8f4fe 30%, #f5fbff 60%, #fff 100%);
+    padding: 120px 5% 80px;
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    overflow: hidden;
+  }
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .hero-blob {
+    position: absolute; border-radius: 50%;
+    filter: blur(60px); opacity: 0.35;
+  }
+  .blob-1 { width: 600px; height: 600px; top: -100px; right: -100px;
+    background: radial-gradient(circle, #93c5fd, #bfdbfe); }
+  .blob-2 { width: 400px; height: 400px; bottom: -50px; left: 10%;
+    background: radial-gradient(circle, #a5f3fc, #cffafe); }
+
+  .hero-inner {
+    max-width: 1280px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    position: relative; z-index: 1;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(219,234,254,0.8);
+    border: 1px solid var(--blue-200);
+    border-radius: 20px; padding: 5px 14px;
+    font-size: 12px; font-weight: 600;
+    color: var(--blue-600);
+    margin-bottom: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-500);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .hero-title {
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 800; line-height: 1.15;
+    color: var(--gray-900);
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+  .hero-title .highlight {
+    background: linear-gradient(135deg, var(--blue-600), var(--cyan-500));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 16px; color: var(--gray-500); line-height: 1.8;
+    margin-bottom: 36px; max-width: 520px;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    padding: 14px 28px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-500));
+    color: white; font-size: 15px; font-weight: 600;
+    text-decoration: none; border: none; cursor: pointer;
+    box-shadow: 0 4px 20px rgba(59,130,246,0.4);
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(59,130,246,0.5); }
+  .btn-secondary {
+    padding: 14px 28px; border-radius: 10px;
+    background: rgba(255,255,255,0.9);
+    color: var(--blue-600); font-size: 15px; font-weight: 600;
+    text-decoration: none; border: 1.5px solid var(--blue-200); cursor: pointer;
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-secondary:hover { background: var(--blue-50); border-color: var(--blue-400); }
+  .hero-tags {
+    display: flex; gap: 10px; margin-top: 32px; flex-wrap: wrap;
+  }
+  .hero-tag {
+    font-size: 12px; color: var(--gray-500);
+    background: rgba(255,255,255,0.7);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px; padding: 4px 10px;
+  }
+
+  /* Hero Illustration */
+  .hero-visual {
+    position: relative;
+  }
+  .hero-card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(147,197,253,0.4);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(59,130,246,0.12), 0 0 0 1px rgba(255,255,255,0.6);
+    position: relative;
+  }
+  .plate-viz {
+    display: flex; flex-direction: column; gap: 5px;
+    margin-bottom: 20px;
+  }
+  .plate-header {
+    display: flex; align-items: center; gap: 6px; margin-bottom: 8px;
+  }
+  .plate-title { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+  .plate-badge {
+    font-size: 10px; background: var(--blue-100); color: var(--blue-600);
+    border-radius: 4px; padding: 2px 6px; font-weight: 600;
+  }
+  .well-grid {
+    display: grid; grid-template-columns: 20px repeat(12, 1fr); gap: 3px;
+  }
+  .well-row-label {
+    font-size: 8px; color: var(--gray-400); font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .well {
+    width: 100%; aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1.5px solid var(--blue-200);
+    background: rgba(219,234,254,0.3);
+    transition: all 0.3s;
+    position: relative;
+  }
+  .well.active { background: linear-gradient(135deg, #60a5fa, #22d3ee); border-color: transparent; }
+  .well.scanning { background: linear-gradient(135deg, #3b82f6, #0284c7); border-color: transparent;
+    box-shadow: 0 0 8px rgba(59,130,246,0.6); animation: scanning 1.5s infinite; }
+  @keyframes scanning { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  .well.done { background: linear-gradient(135deg, #34d399, #06b6d4); border-color: transparent; }
+
+  .stats-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px;
+  }
+  .stat-card {
+    background: var(--blue-50);
+    border: 1px solid var(--blue-100);
+    border-radius: 10px; padding: 10px 12px;
+    text-align: center;
+  }
+  .stat-val { font-size: 20px; font-weight: 700; color: var(--blue-600); }
+  .stat-lbl { font-size: 10px; color: var(--gray-500); margin-top: 2px; }
+
+  .mini-chart {
+    margin-top: 16px; background: var(--gray-50);
+    border: 1px solid var(--gray-200); border-radius: 10px;
+    padding: 12px; overflow: hidden;
+  }
+  .chart-label { font-size: 11px; color: var(--gray-500); margin-bottom: 8px; font-weight: 500; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 3px; height: 40px; }
+  .bar {
+    flex: 1; border-radius: 3px 3px 0 0;
+    background: linear-gradient(180deg, var(--blue-400), var(--blue-200));
+    transition: height 0.3s;
+  }
+
+  .float-badge {
+    position: absolute; right: -20px; top: 30px;
+    background: white; border: 1px solid var(--blue-100);
+    border-radius: 12px; padding: 10px 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    font-size: 12px; font-weight: 600; color: var(--gray-700);
+    white-space: nowrap;
+  }
+  .float-badge span { color: var(--blue-600); }
+
+  /* ===== SECTION BASE ===== */
+  section { padding: 88px 5%; }
+  .section-inner { max-width: 1280px; margin: 0 auto; }
+  .section-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+    color: var(--blue-500); text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-size: clamp(24px, 3vw, 40px);
+    font-weight: 800; color: var(--gray-900);
+    line-height: 1.2; margin-bottom: 14px;
+    letter-spacing: -0.02em;
+  }
+  .section-sub {
+    font-size: 16px; color: var(--gray-500);
+    max-width: 600px; line-height: 1.8;
+    margin-bottom: 56px;
+  }
+
+  /* ===== CAPABILITIES ===== */
+  #capabilities { background: var(--gray-50); }
+  .caps-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .cap-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 16px; padding: 28px;
+    transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .cap-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--blue-400), var(--cyan-400));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .cap-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(59,130,246,0.12); border-color: var(--blue-200); }
+  .cap-card:hover::before { transform: scaleX(1); }
+  .cap-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: var(--blue-50);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+  }
+  .cap-icon svg { width: 24px; height: 24px; stroke: var(--blue-600); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .cap-title { font-size: 16px; font-weight: 700; color: var(--gray-800); margin-bottom: 8px; }
+  .cap-desc { font-size: 14px; color: var(--gray-500); line-height: 1.7; }
+
+  /* ===== WORKFLOW ===== */
+  #workflow { background: white; }
+  .workflow-container {
+    display: grid; grid-template-columns: 1fr 380px; gap: 60px; align-items: start;
+  }
+  .flow-steps { display: flex; flex-direction: column; gap: 0; }
+  .flow-step {
+    display: flex; gap: 20px; padding: 20px 0;
+    border-bottom: 1px solid var(--gray-100);
+    position: relative;
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .step-num {
+    width: 36px; height: 36px; flex-shrink: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--blue-500), var(--cyan-500));
+    color: white; font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-body {}
+  .step-title { font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
+  .step-desc { font-size: 13px; color: var(--gray-500); line-height: 1.6; }
+
+  .hw-panel {
+    background: linear-gradient(160deg, #f0f7ff, #e8f4fe);
+    border: 1px solid var(--blue-200);
+    border-radius: 20px; padding: 28px;
+  }
+  .hw-title { font-size: 14px; font-weight: 700; color: var(--gray-700); margin-bottom: 20px; }
+  .hw-items { display: flex; flex-direction: column; gap: 12px; }
+  .hw-item {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,0.8);
+    border: 1px solid rgba(147,197,253,0.3);
+    border-radius: 10px; padding: 12px 14px;
+  }
+  .hw-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-400), var(--cyan-400));
+    flex-shrink: 0;
+    box-shadow: 0 0 6px rgba(59,130,246,0.5);
+  }
+  .hw-name { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+  .hw-desc { font-size: 11px; color: var(--gray-400); margin-left: auto; }
+
+  /* ===== PLATE SCAN ===== */
+  #platescan { background: var(--gray-50); }
+  .plate-scan-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;
+  }
+  .plate-demo {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 20px; padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+  .pdemo-title { font-size: 14px; font-weight: 700; color: var(--gray-700); margin-bottom: 16px; }
+  .full-plate {
+    display: grid;
+    grid-template-columns: 24px repeat(12, 1fr);
+    gap: 4px; width: 100%;
+  }
+  .col-labels {
+    grid-column: 1/-1;
+    display: grid;
+    grid-template-columns: 24px repeat(12, 1fr);
+    gap: 4px; margin-bottom: 2px;
+  }
+  .col-lbl { font-size: 8px; text-align: center; color: var(--gray-400); font-weight: 600; }
+  .row-lbl { font-size: 8px; color: var(--gray-400); font-weight: 600;
+    display: flex; align-items: center; justify-content: center; }
+  .fwell {
+    aspect-ratio: 1; border-radius: 50%;
+    border: 1px solid var(--blue-200);
+    background: rgba(219,234,254,0.2);
+    position: relative;
+  }
+  .fwell.s0 { background: rgba(219,234,254,0.15); }
+  .fwell.s1 { background: linear-gradient(135deg, #bfdbfe, #a5f3fc); border-color: var(--blue-300); }
+  .fwell.s2 { background: linear-gradient(135deg, #60a5fa, #22d3ee); border-color: transparent; }
+  .fwell.s3 { background: linear-gradient(135deg, #3b82f6, #0ea5e9); border-color: transparent;
+    box-shadow: 0 0 6px rgba(59,130,246,0.4); }
+  .fwell.current { background: linear-gradient(135deg, #2563eb, #0891b2);
+    box-shadow: 0 0 10px rgba(37,99,235,0.7); animation: cur 1s infinite; }
+  @keyframes cur { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+
+  .snake-legend {
+    display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--gray-500);
+  }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  .fov-demo {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 20px; padding: 28px;
+  }
+  .fov-tabs {
+    display: flex; gap: 8px; margin-bottom: 20px;
+  }
+  .fov-tab {
+    padding: 6px 14px; border-radius: 6px;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid var(--gray-200); color: var(--gray-500);
+    background: white;
+  }
+  .fov-tab.active {
+    background: var(--blue-500); color: white; border-color: var(--blue-500);
+  }
+  .fov-grid-container {
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .fov-example {
+    text-align: center;
+  }
+  .fov-label { font-size: 12px; font-weight: 600; color: var(--gray-600); margin-bottom: 8px; }
+  .fov-grid {
+    display: inline-grid; gap: 4px;
+    background: var(--gray-100); padding: 8px; border-radius: 10px;
+  }
+  .fov-grid-2 { grid-template-columns: repeat(2, 50px); }
+  .fov-grid-3 { grid-template-columns: repeat(3, 40px); }
+  .fov-cell {
+    border-radius: 6px; height: 50px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: white;
+    position: relative;
+    transition: all 0.3s;
+  }
+  .fov-cell-3 { height: 40px; }
+  .fov-cell.empty {
+    background: rgba(219,234,254,0.4); border: 1.5px dashed var(--blue-200);
+    color: var(--gray-300);
+  }
+  .fov-cell.filled { background: linear-gradient(135deg, var(--blue-400), var(--cyan-400)); }
+  .fov-cell.active-c {
+    background: linear-gradient(135deg, var(--blue-600), var(--cyan-500));
+    box-shadow: 0 4px 12px rgba(59,130,246,0.5);
+  }
+
+  /* ===== STATE MACHINE ===== */
+  #statemachine { background: white; }
+  .sm-container { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+  .states-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .state-card {
+    border-radius: 12px; padding: 14px 16px;
+    border: 1.5px solid;
+    transition: all 0.2s;
+  }
+  .state-card:hover { transform: translateY(-2px); }
+  .state-card.idle { border-color: var(--gray-300); background: var(--gray-50); }
+  .state-card.init { border-color: var(--blue-300); background: var(--blue-50); }
+  .state-card.ready { border-color: #86efac; background: #f0fdf4; }
+  .state-card.running { border-color: var(--blue-400); background: var(--blue-50);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+  .state-card.waiting { border-color: #fde68a; background: #fffbeb; }
+  .state-card.paused { border-color: #fdba74; background: #fff7ed; }
+  .state-card.error { border-color: #fca5a5; background: #fef2f2; }
+  .state-card.recovering { border-color: #c4b5fd; background: #faf5ff; }
+  .state-card.stopped { border-color: var(--gray-400); background: var(--gray-100); }
+  .state-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .state-card.idle .state-name { color: var(--gray-600); }
+  .state-card.init .state-name { color: var(--blue-600); }
+  .state-card.ready .state-name { color: #16a34a; }
+  .state-card.running .state-name { color: var(--blue-700); }
+  .state-card.waiting .state-name { color: #d97706; }
+  .state-card.paused .state-name { color: #ea580c; }
+  .state-card.error .state-name { color: #dc2626; }
+  .state-card.recovering .state-name { color: #7c3aed; }
+  .state-card.stopped .state-name { color: var(--gray-600); }
+  .state-desc { font-size: 11px; color: var(--gray-500); line-height: 1.5; }
+
+  .task-flow { margin-top: 0; }
+  .tf-title { font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 20px; }
+  .tf-steps { display: flex; flex-direction: column; gap: 0; }
+  .tf-step {
+    display: flex; gap: 16px; padding: 12px 0;
+    border-bottom: 1px solid var(--gray-100);
+    align-items: flex-start;
+  }
+  .tf-step:last-child { border-bottom: none; }
+  .tf-icon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    border-radius: 8px;
+    background: var(--blue-50);
+    border: 1px solid var(--blue-200);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .tf-body {}
+  .tf-name { font-size: 13px; font-weight: 600; color: var(--gray-800); }
+  .tf-note { font-size: 12px; color: var(--gray-400); }
+
+  /* ===== SCENARIOS ===== */
+  #scenarios { background: linear-gradient(160deg, #f0f7ff, #f5fbff); }
+  .scenarios-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .scenario-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 16px; padding: 28px;
+    display: flex; gap: 20px;
+    transition: all 0.3s;
+  }
+  .scenario-card:hover {
+    box-shadow: 0 12px 32px rgba(59,130,246,0.1);
+    border-color: var(--blue-200);
+    transform: translateY(-2px);
+  }
+  .scenario-icon {
+    width: 56px; height: 56px; flex-shrink: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--blue-50), var(--cyan-100));
+    border: 1px solid var(--blue-200);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .scenario-title { font-size: 16px; font-weight: 700; color: var(--gray-800); margin-bottom: 6px; }
+  .scenario-desc { font-size: 14px; color: var(--gray-500); line-height: 1.7; }
+
+  /* ===== DATA MGMT ===== */
+  #data { background: white; }
+  .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .data-list { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+  .data-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 18px; border-radius: 12px;
+    background: var(--gray-50); border: 1px solid var(--gray-200);
+    transition: all 0.2s;
+  }
+  .data-item:hover { background: var(--blue-50); border-color: var(--blue-200); }
+  .di-check {
+    width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--blue-500), var(--cyan-500));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .di-check svg { width: 11px; height: 11px; }
+  .di-title { font-size: 14px; font-weight: 600; color: var(--gray-800); margin-bottom: 2px; }
+  .di-desc { font-size: 13px; color: var(--gray-500); line-height: 1.5; }
+
+  .data-visual {
+    background: linear-gradient(160deg, #eff8ff, #e0f2fe);
+    border: 1px solid var(--blue-200);
+    border-radius: 20px; padding: 28px;
+  }
+  .dv-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; border-radius: 10px;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(147,197,253,0.3);
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .dv-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .dv-key { font-weight: 600; color: var(--gray-700); }
+  .dv-val { color: var(--gray-500); margin-left: auto; font-family: 'SF Mono', 'Consolas', monospace; font-size: 12px; }
+  .dv-log {
+    background: var(--gray-800); border-radius: 10px;
+    padding: 16px; margin-top: 16px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 11px; line-height: 2;
+  }
+  .log-line { color: #94a3b8; }
+  .log-line .ts { color: #60a5fa; }
+  .log-line .ok { color: #34d399; }
+  .log-line .inf { color: #fde68a; }
+
+  /* ===== ARCHITECTURE ===== */
+  #architecture { background: var(--gray-50); }
+  .arch-box {
+    background: white; border: 1px solid var(--gray-200);
+    border-radius: 20px; padding: 40px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+  .arch-layers { display: flex; flex-direction: column; gap: 16px; }
+  .arch-layer {
+    border-radius: 14px; padding: 20px 24px;
+    position: relative;
+  }
+  .layer-ui { background: linear-gradient(135deg, #eff8ff, #dbeafe); border: 1.5px solid var(--blue-200); }
+  .layer-core { background: linear-gradient(135deg, #e0f2fe, #bae6fd); border: 1.5px solid #7dd3fc; }
+  .layer-hw { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border: 1.5px solid #6ee7b7; }
+  .layer-io { background: linear-gradient(135deg, #fef9c3, #fef08a); border: 1.5px solid #fde047; }
+  .arch-layer-title { font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 10px; }
+  .arch-modules { display: flex; gap: 10px; flex-wrap: wrap; }
+  .arch-mod {
+    background: rgba(255,255,255,0.8);
+    border-radius: 8px; padding: 6px 12px;
+    font-size: 12px; font-weight: 500; color: var(--gray-700);
+    border: 1px solid rgba(255,255,255,0.6);
+  }
+  .arch-arrow {
+    text-align: center; font-size: 20px; color: var(--blue-300);
+    margin: -6px 0;
+  }
+
+  /* ===== CTA ===== */
+  #cta {
+    background: linear-gradient(135deg, #1e3a8a, #1d4ed8, #0284c7);
+    padding: 100px 5%;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  #cta::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.07) 0%, transparent 40%);
+  }
+  .cta-inner { position: relative; z-index: 1; }
+  .cta-title {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800; color: white; margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .cta-sub { font-size: 16px; color: rgba(255,255,255,0.75); margin-bottom: 40px; max-width: 580px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+  .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-white {
+    padding: 14px 32px; border-radius: 10px;
+    background: white; color: var(--blue-600);
+    font-size: 15px; font-weight: 700;
+    text-decoration: none; border: none; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+  }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .btn-ghost {
+    padding: 14px 32px; border-radius: 10px;
+    background: rgba(255,255,255,0.12);
+    color: white; font-size: 15px; font-weight: 600;
+    text-decoration: none; border: 1.5px solid rgba(255,255,255,0.3); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.2); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--gray-900); padding: 60px 5% 40px;
+    color: var(--gray-400);
+  }
+  .footer-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--gray-800);
+    margin-bottom: 32px;
+  }
+  .footer-brand {}
+  .footer-logo {
+    font-size: 20px; font-weight: 800;
+    background: linear-gradient(135deg, var(--blue-400), var(--cyan-400));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 12px;
+  }
+  .footer-brand p { font-size: 13px; line-height: 1.7; max-width: 260px; }
+  .footer-col h4 { font-size: 13px; font-weight: 600; color: var(--gray-200); margin-bottom: 16px; }
+  .footer-col a {
+    display: block; font-size: 13px; color: var(--gray-500);
+    text-decoration: none; margin-bottom: 10px;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--blue-400); }
+  .footer-bottom {
+    max-width: 1280px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--gray-600);
+  }
+
+  /* ===== DIVIDER ===== */
+  .divider-wave {
+    width: 100%; line-height: 0;
+    overflow: hidden;
+  }
+
+  /* ===== UTILITIES ===== */
+  .text-center { text-align: center; }
+  .mx-auto { margin-left: auto; margin-right: auto; }
+  .mb-0 { margin-bottom: 0 !important; }
+
+  /* Mobile */
+  @media(max-width:768px){
+    nav .nav-links { display: none; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .caps-grid { grid-template-columns: 1fr 1fr; }
+    .workflow-container { grid-template-columns: 1fr; }
+    .plate-scan-grid { grid-template-columns: 1fr; }
+    .sm-container { grid-template-columns: 1fr; }
+    .scenarios-grid { grid-template-columns: 1fr; }
+    .data-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    .states-grid { grid-template-columns: repeat(2,1fr); }
+  }
+  @media(max-width:480px){
+    .caps-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav>
+  <div class="nav-logo">
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="28" height="28" rx="7" fill="url(#ng)"/>
+      <circle cx="14" cy="14" r="5" stroke="white" stroke-width="1.5"/>
+      <circle cx="14" cy="14" r="2" fill="white"/>
+      <line x1="14" y1="2" x2="14" y2="7" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="14" y1="21" x2="14" y2="26" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="2" y1="14" x2="7" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="21" y1="14" x2="26" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="ng" x1="0" y1="0" x2="28" y2="28">
+          <stop offset="0%" stop-color="#3b82f6"/>
+          <stop offset="100%" stop-color="#06b6d4"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    CellScope Pro
+  </div>
+  <div class="nav-links">
+    <a href="#capabilities">核心能力</a>
+    <a href="#workflow">控制流程</a>
+    <a href="#platescan">孔板扫描</a>
+    <a href="#statemachine">状态机</a>
+    <a href="#scenarios">应用场景</a>
+    <a href="#data">数据管理</a>
+  </div>
+  <a href="#cta" class="nav-cta">预约演示</a>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-blob blob-1"></div>
+    <div class="hero-blob blob-2"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">新一代活细胞成像控制系统</div>
+      <h1 class="hero-title">
+        活细胞监测<br>
+        <span class="highlight">自动化控制平台</span>
+      </h1>
+      <p class="hero-sub">
+        支持 96 孔板、多孔板模板、孔板巡扫、孔内多视野扫描、自动对焦与时间序列成像，构建面向科研与研发场景的一体化实验监测系统。
+      </p>
+      <div class="hero-actions">
+        <a href="#architecture" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          查看方案架构
+        </a>
+        <a href="#cta" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/>
+          </svg>
+          预约产品演示
+        </a>
+      </div>
+      <div class="hero-tags">
+        <span class="hero-tag">96孔板支持</span>
+        <span class="hero-tag">蛇形巡扫</span>
+        <span class="hero-tag">自动对焦</span>
+        <span class="hero-tag">时序成像</span>
+        <span class="hero-tag">硬件闭环控制</span>
+        <span class="hero-tag">异常自恢复</span>
+      </div>
+    </div>
+
+    <!-- Hero Visual -->
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="plate-header">
+          <div class="plate-title">96 孔板实时扫描</div>
+          <div class="plate-badge">● 运行中</div>
+        </div>
+        <div class="well-grid" id="heroWellGrid">
+          <!-- Column labels -->
+          <div></div>
+          <div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">1</div>
+          <div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">2</div>
+          <div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">3</div>
+          <div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">4</div>
+          <div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">5</div>
+          <div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">6</div>
+          <div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">7</div>
+          <div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">8</div>
+          <div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">9</div>
+          <div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">10</div>
+          <div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">11</div>
+          <div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">12</div>
+        </div>
+        <div id="wellRows"></div>
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-val" id="doneCount">34</div>
+            <div class="stat-lbl">已完成孔</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">T+2h</div>
+            <div class="stat-lbl">当前时间点</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" style="color:#06b6d4">4×</div>
+            <div class="stat-lbl">单孔视野</div>
+          </div>
+        </div>
+        <div class="mini-chart">
+          <div class="chart-label">成像质量评分（最近 12 孔）</div>
+          <div class="chart-bars">
+            <div class="bar" style="height:78%"></div>
+            <div class="bar" style="height:85%"></div>
+            <div class="bar" style="height:72%"></div>
+            <div class="bar" style="height:90%"></div>
+            <div class="bar" style="height:88%"></div>
+            <div class="bar" style="height:95%"></div>
+            <div class="bar" style="height:80%"></div>
+            <div class="bar" style="height:87%"></div>
+            <div class="bar" style="height:92%"></div>
+            <div class="bar" style="height:76%"></div>
+            <div class="bar" style="height:89%"></div>
+            <div class="bar" style="height:94%"></div>
+          </div>
+        </div>
+        <div class="float-badge">✓ 自动对焦 <span>已就绪</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CAPABILITIES ===== -->
+<section id="capabilities">
+  <div class="section-inner">
+    <div class="text-center" style="margin-bottom:56px">
+      <div class="section-label">核心能力</div>
+      <h2 class="section-title">围绕实验自动化构建完整控制闭环</h2>
+      <p class="section-sub mx-auto" style="margin-bottom:0">围绕实验自动化、硬件协同与长期成像任务构建完整的软件控制闭环。</p>
+    </div>
+    <div class="caps-grid">
+      <!-- Card 1 -->
+      <div class="cap-card">
+        <div class="cap-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        </div>
+        <div class="cap-title">多孔板适配</div>
+        <div class="cap-desc">支持 6 孔板、12 孔板、24 孔板、48 孔板、96 孔板以及自定义孔板模板，满足不同实验设计需求。</div>
+      </div>
+      <!-- Card 2 -->
+      <div class="cap-card">
+        <div class="cap-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><path d="M7 3v3M12 3v3M17 3v3M7 18v3M12 18v3M17 18v3"/></svg>
+        </div>
+        <div class="cap-title">96 孔板巡扫</div>
+        <div class="cap-desc">支持按行扫描、蛇形扫描、自定义路径与优先级扫描，提升大规模实验巡检效率。</div>
+      </div>
+      <!-- Card 3 -->
+      <div class="cap-card">
+        <div class="cap-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M2 12h4M18 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <div class="cap-title">孔内多视野扫描</div>
+        <div class="cap-desc">支持中心点、四点、九宫格及自定义 ROI 采集，兼顾孔级覆盖率与成像效率。</div>
+      </div>
+      <!-- Card 4 -->
+      <div class="cap-card">
+        <div class="cap-icon">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><circle cx="11" cy="11" r="3"/></svg>
+        </div>
+        <div class="cap-title">自动对焦控制</div>
+        <div class="cap-desc">结合 Z 轴控制与对焦策略，实现不同孔位、不同时间点下的稳定高精度成像。</div>
+      </div>
+      <!-- Card 5 -->
+      <div class="cap-card">
+        <div class="cap-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-8"/></svg>
+        </div>
+        <div class="cap-title">时间序列采集</div>
+        <div class="cap-desc">支持分钟级到天级实验计划配置，实现长期连续监测与动态过程追踪，可无人值守运行。</div>
+      </div>
+      <!-- Card 6 -->
+      <div class="cap-card">
+        <div class="cap-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="cap-title">硬件协同控制</div>
+        <div class="cap-desc">统一调度 XY 载物台、Z 轴、相机、光源、环境模块与安全互锁，实现完整自动化闭环。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WORKFLOW ===== -->
+<section id="workflow">
+  <div class="section-inner">
+    <div style="margin-bottom:48px">
+      <div class="section-label">控制流程</div>
+      <h2 class="section-title">软件如何驱动硬件完成自动化成像</h2>
+      <p class="section-sub">系统以任务调度为核心，将用户配置自动转换为可执行扫描队列，并通过统一的硬件抽象层协调各模块工作。</p>
+    </div>
+    <div class="workflow-container">
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <div class="step-title">用户配置层</div>
+            <div class="step-desc">用户可选择孔板类型、目标孔位、孔内扫描策略、采集时间间隔、曝光参数与实验总时长。</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <div class="step-title">任务调度层</div>
+            <div class="step-desc">任务调度器负责生成时间点队列、孔位路径与视野序列，并管理暂停、恢复、重试与异常处理。</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <div class="step-title">孔板路径规划</div>
+            <div class="step-desc">根据孔板模板自动生成最优巡扫路径（蛇形/行扫/自定义），减少载物台无效移动距离。</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <div class="step-title">硬件控制层</div>
+            <div class="step-desc">运动控制、对焦控制、光源控制与相机控制协同执行，完成逐孔定位、自动对焦与图像采集。</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">05</div>
+          <div class="step-body">
+            <div class="step-title">数据管理层</div>
+            <div class="step-desc">系统自动保存图像、时间戳、孔位信息、焦点参数、设备状态与实验日志，保障实验全程可追踪。</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">06</div>
+          <div class="step-body">
+            <div class="step-title">异常恢复机制</div>
+            <div class="step-desc">检测运动失败、对焦超时、相机异常等情况，自动执行恢复策略，最大化实验连续性。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-panel">
+        <div class="hw-title">🔧 硬件设备模块</div>
+        <div class="hw-items">
+          <div class="hw-item">
+            <div class="hw-dot"></div>
+            <div>
+              <div class="hw-name">XY 载物台</div>
+              <div style="font-size:11px;color:#94a3b8;margin-top:2px">精密运动控制·孔位定位</div>
+            </div>
+            <div class="hw-desc">高精度</div>
+          </div>
+          <div class="hw-item">
+            <div class="hw-dot"></div>
+            <div>
+              <div class="hw-name">Z 轴驱动器</div>
+              <div style="font-size:11px;color:#94a3b8;margin-top:2px">焦平面调节·对焦执行</div>
+            </div>
+            <div class="hw-desc">nm级</div>
+          </div>
+          <div class="hw-item">
+            <div class="hw-dot"></div>
+            <div>
+              <div class="hw-name">相机模块</div>
+              <div style="font-size:11px;color:#94a3b8;margin-top:2px">sCMOS·帧曝光控制</div>
+            </div>
+            <div class="hw-desc">16-bit</div>
+          </div>
+          <div class="hw-item">
+            <div class="hw-dot"></div>
+            <div>
+              <div class="hw-name">光源控制器</div>
+              <div style="font-size:11px;color:#94a3b8;margin-top:2px">明场·荧光·强度调节</div>
+            </div>
+            <div class="hw-desc">多通道</div>
+          </div>
+          <div class="hw-item">
+            <div class="hw-dot"></div>
+            <div>
+              <div class="hw-name">环境模块</div>
+              <div style="font-size:11px;color:#94a3b8;margin-top:2px">温控·CO₂·湿度</div>
+            </div>
+            <div class="hw-desc">37°C</div>
+          </div>
+          <div class="hw-item">
+            <div class="hw-dot"></div>
+            <div>
+              <div class="hw-name">安全互锁</div>
+              <div style="font-size:11px;color:#94a3b8;margin-top:2px">碰撞防护·急停保护</div>
+            </div>
+            <div class="hw-desc">实时</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PLATE SCAN ===== -->
+<section id="platescan">
+  <div class="section-inner">
+    <div class="text-center" style="margin-bottom:48px">
+      <div class="section-label">孔板扫描</div>
+      <h2 class="section-title">96 孔板扫描与巡扫逻辑</h2>
+      <p class="section-sub mx-auto" style="margin-bottom:0">从整板路径规划到单孔内部视野分布，实现两层扫描逻辑的一体化管理。</p>
+    </div>
+    <div class="plate-scan-grid">
+      <!-- Full plate demo -->
+      <div class="plate-demo">
+        <div class="pdemo-title">96 孔板蛇形巡扫路径</div>
+        <div id="fullPlateViz">
+          <!-- Generated by JS -->
+        </div>
+        <div class="snake-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#34d399,#06b6d4)"></div>已完成</div>
+          <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#3b82f6,#0ea5e9)"></div>扫描中</div>
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(219,234,254,0.4);border:1px solid #93c5fd"></div>待扫描</div>
+        </div>
+        <p style="margin-top:12px;font-size:12px;color:#94a3b8;line-height:1.6">
+          系统基于孔板模板自动计算每个孔位坐标，并可根据实验需求生成最优巡扫路径，支持按行、蛇形或自定义优先级排序。
+        </p>
+      </div>
+
+      <!-- FOV demo -->
+      <div class="fov-demo">
+        <div class="pdemo-title">孔内多视野扫描策略</div>
+        <div class="fov-tabs">
+          <div class="fov-tab active" onclick="setFovMode(this,'center')">中心点</div>
+          <div class="fov-tab" onclick="setFovMode(this,'four')">四点</div>
+          <div class="fov-tab" onclick="setFovMode(this,'nine')">九宫格</div>
+        </div>
+
+        <div id="fovCenter" class="fov-display">
+          <div style="text-align:center">
+            <div class="fov-label">单孔中心点采集（1×）</div>
+            <div class="fov-grid fov-grid-3" style="margin:0 auto">
+              <div class="fov-cell fov-cell-3 empty"></div>
+              <div class="fov-cell fov-cell-3 empty"></div>
+              <div class="fov-cell fov-cell-3 empty"></div>
+              <div class="fov-cell fov-cell-3 empty"></div>
+              <div class="fov-cell fov-cell-3 active-c">C</div>
+              <div class="fov-cell fov-cell-3 empty"></div>
+              <div class="fov-cell fov-cell-3 empty"></div>
+              <div class="fov-cell fov-cell-3 empty"></div>
+              <div class="fov-cell fov-cell-3 empty"></div>
+            </div>
+            <p style="margin-top:12px;font-size:12px;color:#94a3b8">仅采集孔中心，速度最快</p>
+          </div>
+        </div>
+
+        <div id="fovFour" class="fov-display" style="display:none">
+          <div style="text-align:center">
+            <div class="fov-label">四点采集（2×2）</div>
+            <div class="fov-grid fov-grid-3" style="margin:0 auto">
+              <div class="fov-cell fov-cell-3 active-c">1</div>
+              <div class="fov-cell fov-cell-3 empty"></div>
+              <div class="fov-cell fov-cell-3 active-c">2</div>
+              <div class="fov-cell fov-cell-3 empty"></div>
+              <div class="fov-cell fov-cell-3 empty"></div>
+              <div class="fov-cell fov-cell-3 empty"></div>
+              <div class="fov-cell fov-cell-3 active-c">3</div>
+              <div class="fov-cell fov-cell-3 empty"></div>
+              <div class="fov-cell fov-cell-3 active-c">4</div>
+            </div>
+            <p style="margin-top:12px;font-size:12px;color:#94a3b8">采集孔内四个象限，覆盖率 &gt;60%</p>
+          </div>
+        </div>
+
+        <div id="fovNine" class="fov-display" style="display:none">
+          <div style="text-align:center">
+            <div class="fov-label">九宫格采集（3×3）</div>
+            <div class="fov-grid fov-grid-3" style="margin:0 auto">
+              <div class="fov-cell fov-cell-3 filled">1</div>
+              <div class="fov-cell fov-cell-3 filled">2</div>
+              <div class="fov-cell fov-cell-3 filled">3</div>
+              <div class="fov-cell fov-cell-3 filled">4</div>
+              <div class="fov-cell fov-cell-3 active-c">5</div>
+              <div class="fov-cell fov-cell-3 filled">6</div>
+              <div class="fov-cell fov-cell-3 filled">7</div>
+              <div class="fov-cell fov-cell-3 filled">8</div>
+              <div class="fov-cell fov-cell-3 filled">9</div>
+            </div>
+            <p style="margin-top:12px;font-size:12px;color:#94a3b8">全孔均匀覆盖，覆盖率 &gt;95%</p>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;padding:16px;background:var(--blue-50);border:1px solid var(--blue-200);border-radius:10px">
+          <p style="font-size:13px;color:#1d4ed8;font-weight:600;margin-bottom:6px">📐 自定义 ROI 支持</p>
+          <p style="font-size:12px;color:#64748b;line-height:1.6">除预设模式外，支持用户手动指定任意孔内位置作为采集视野，满足特殊实验需求。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATE MACHINE ===== -->
+<section id="statemachine">
+  <div class="section-inner">
+    <div style="margin-bottom:48px">
+      <div class="section-label">状态机</div>
+      <h2 class="section-title">稳定可靠的状态机与任务调度机制</h2>
+      <p class="section-sub">为了支持长时间、连续性实验，系统构建了完整的软件状态机，确保在复杂实验条件下依然保持控制稳定性。</p>
+    </div>
+    <div class="sm-container">
+      <div>
+        <p style="font-size:14px;font-weight:600;color:#334155;margin-bottom:16px">系统状态定义</p>
+        <div class="states-grid">
+          <div class="state-card idle">
+            <div class="state-name">Idle</div>
+            <div class="state-desc">空闲状态，等待用户配置实验参数</div>
+          </div>
+          <div class="state-card init">
+            <div class="state-name">Initializing</div>
+            <div class="state-desc">硬件初始化、自检与轴归零</div>
+          </div>
+          <div class="state-card ready">
+            <div class="state-name">Ready</div>
+            <div class="state-desc">准备就绪，可开始实验</div>
+          </div>
+          <div class="state-card running">
+            <div class="state-name">Running</div>
+            <div class="state-desc">正在执行孔板扫描与成像任务</div>
+          </div>
+          <div class="state-card waiting">
+            <div class="state-name">Waiting</div>
+            <div class="state-desc">等待下一个时间点到来</div>
+          </div>
+          <div class="state-card paused">
+            <div class="state-name">Paused</div>
+            <div class="state-desc">用户主动暂停实验</div>
+          </div>
+          <div class="state-card error">
+            <div class="state-name">Error</div>
+            <div class="state-desc">检测到异常或硬件故障</div>
+          </div>
+          <div class="state-card recovering">
+            <div class="state-name">Recovering</div>
+            <div class="state-desc">执行自动恢复或重试策略</div>
+          </div>
+          <div class="state-card stopped">
+            <div class="state-name">Stopped</div>
+            <div class="state-desc">实验正常结束或用户终止</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding:14px 16px;background:#eff8ff;border:1px solid #bfdbfe;border-radius:10px;font-size:12px;color:#475569;line-height:1.7">
+          通过明确的状态切换机制，系统能够在运动失败、对焦失败、相机超时或安全中断等情况下快速进入恢复流程，降低实验中断风险。
+        </div>
+      </div>
+
+      <div class="task-flow">
+        <div class="tf-title">实验任务执行流程</div>
+        <div class="tf-steps">
+          <div class="tf-step">
+            <div class="tf-icon">🔌</div>
+            <div class="tf-body">
+              <div class="tf-name">硬件初始化</div>
+              <div class="tf-note">各轴归零、相机自检、环境模块启动</div>
+            </div>
+          </div>
+          <div class="tf-step">
+            <div class="tf-icon">🧫</div>
+            <div class="tf-body">
+              <div class="tf-name">加载孔板配置</div>
+              <div class="tf-note">选择孔板模板、设定孔位坐标系</div>
+            </div>
+          </div>
+          <div class="tf-step">
+            <div class="tf-icon">📋</div>
+            <div class="tf-body">
+              <div class="tf-name">生成扫描任务队列</div>
+              <div class="tf-note">规划路径、生成视野序列、设置时间点</div>
+            </div>
+          </div>
+          <div class="tf-step">
+            <div class="tf-icon">🔄</div>
+            <div class="tf-body">
+              <div class="tf-name">逐孔巡扫</div>
+              <div class="tf-note">XY 载物台移至目标孔位</div>
+            </div>
+          </div>
+          <div class="tf-step">
+            <div class="tf-icon">🎯</div>
+            <div class="tf-body">
+              <div class="tf-name">自动对焦</div>
+              <div class="tf-note">Z 轴调节，确定最优焦平面</div>
+            </div>
+          </div>
+          <div class="tf-step">
+            <div class="tf-icon">📷</div>
+            <div class="tf-body">
+              <div class="tf-name">多视野图像采集</div>
+              <div class="tf-note">光源触发、相机曝光、帧捕获</div>
+            </div>
+          </div>
+          <div class="tf-step">
+            <div class="tf-icon">💾</div>
+            <div class="tf-body">
+              <div class="tf-name">图像存储与标注</div>
+              <div class="tf-note">图像写盘、元数据记录、日志追加</div>
+            </div>
+          </div>
+          <div class="tf-step">
+            <div class="tf-icon">⏱️</div>
+            <div class="tf-body">
+              <div class="tf-name">等待下一时间点</div>
+              <div class="tf-note">进入 Waiting 状态，定时唤醒继续</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ARCHITECTURE ===== -->
+<section id="architecture" style="background:#f8fafc">
+  <div class="section-inner">
+    <div class="text-center" style="margin-bottom:48px">
+      <div class="section-label">系统架构</div>
+      <h2 class="section-title">分层软件架构设计</h2>
+      <p class="section-sub mx-auto" style="margin-bottom:0">清晰的分层架构保证了系统的可维护性、可扩展性与模块化开发能力。</p>
+    </div>
+    <div class="arch-box">
+      <div class="arch-layers">
+        <div class="arch-layer layer-ui">
+          <div class="arch-layer-title">🖥️ 用户界面层（UI Layer）</div>
+          <div class="arch-modules">
+            <div class="arch-mod">实验配置界面</div>
+            <div class="arch-mod">孔板选择与预览</div>
+            <div class="arch-mod">实时监控仪表盘</div>
+            <div class="arch-mod">历史实验管理</div>
+            <div class="arch-mod">告警与日志查看</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer layer-core">
+          <div class="arch-layer-title">⚙️ 核心调度层（Core Engine）</div>
+          <div class="arch-modules">
+            <div class="arch-mod">任务调度器</div>
+            <div class="arch-mod">状态机管理</div>
+            <div class="arch-mod">孔板路径规划</div>
+            <div class="arch-mod">视野序列生成</div>
+            <div class="arch-mod">时间点管理</div>
+            <div class="arch-mod">异常恢复引擎</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer layer-hw">
+          <div class="arch-layer-title">🔧 硬件抽象层（HAL）</div>
+          <div class="arch-modules">
+            <div class="arch-mod">运动控制驱动</div>
+            <div class="arch-mod">相机驱动接口</div>
+            <div class="arch-mod">光源控制器</div>
+            <div class="arch-mod">Z轴对焦驱动</div>
+            <div class="arch-mod">环境模块接口</div>
+            <div class="arch-mod">安全传感器</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer layer-io">
+          <div class="arch-layer-title">💾 数据 I/O 层（Data Layer）</div>
+          <div class="arch-modules">
+            <div class="arch-mod">图像文件系统</div>
+            <div class="arch-mod">实验元数据库</div>
+            <div class="arch-mod">日志系统</div>
+            <div class="arch-mod">配置文件管理</div>
+            <div class="arch-mod">分析接口输出</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SCENARIOS ===== -->
+<section id="scenarios">
+  <div class="section-inner">
+    <div class="text-center" style="margin-bottom:48px">
+      <div class="section-label">应用场景</div>
+      <h2 class="section-title">适用于多种科研与研发场景</h2>
+      <p class="section-sub mx-auto" style="margin-bottom:0">从基础研究到工艺开发，CellScope Pro 提供灵活适配的自动化成像解决方案。</p>
+    </div>
+    <div class="scenarios-grid">
+      <div class="scenario-card">
+        <div class="scenario-icon">🔬</div>
+        <div>
+          <div class="scenario-title">细胞生长监测</div>
+          <div class="scenario-desc">持续记录细胞状态变化，支持长周期成像与动态追踪，自动标注各时间点的细胞形态特征。</div>
+        </div>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-icon">💊</div>
+        <div>
+          <div class="scenario-title">药物筛选实验</div>
+          <div class="scenario-desc">适配 96 孔板高通量流程，提升多条件对比实验效率，支持批量孔位并行数据采集与比对。</div>
+        </div>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-icon">⏰</div>
+        <div>
+          <div class="scenario-title">时间序列实验</div>
+          <div class="scenario-desc">在设定周期内自动完成多轮扫描，便于观察不同时间点的细胞响应与动态变化规律。</div>
+        </div>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-icon">🏗️</div>
+        <div>
+          <div class="scenario-title">工艺研发与平台搭建</div>
+          <div class="scenario-desc">支持定制化孔板模板与扫描逻辑，适合构建专用仪器控制系统，可对接后续分析算法接口。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DATA MGMT ===== -->
+<section id="data">
+  <div class="section-inner">
+    <div style="margin-bottom:0">
+      <div class="section-label">数据管理</div>
+      <h2 class="section-title">数据管理与实验追踪</h2>
+      <p class="section-sub">系统自动记录每次成像过程中的关键实验信息，构建可追溯的数据资产体系。</p>
+    </div>
+    <div class="data-grid">
+      <div>
+        <div class="data-list">
+          <div class="data-item">
+            <div class="di-check"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></div>
+            <div><div class="di-title">图像与视频数据自动归档</div><div class="di-desc">按实验、时间点、孔位、视野多级目录结构自动组织，无需手动整理。</div></div>
+          </div>
+          <div class="data-item">
+            <div class="di-check"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></div>
+            <div><div class="di-title">孔位、时间点、视野位置自动标注</div><div class="di-desc">每张图像附带完整坐标与实验参数元数据，支持后续自动检索。</div></div>
+          </div>
+          <div class="data-item">
+            <div class="di-check"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></div>
+            <div><div class="di-title">曝光、对焦、硬件状态同步保存</div><div class="di-desc">每次采集的完整硬件参数快照存入实验数据库，便于复现与审计。</div></div>
+          </div>
+          <div class="data-item">
+            <div class="di-check"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></div>
+            <div><div class="di-title">异常日志与恢复记录可追踪</div><div class="di-desc">所有异常事件、重试操作与状态切换均有完整日志，方便问题定位。</div></div>
+          </div>
+          <div class="data-item">
+            <div class="di-check"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></div>
+            <div><div class="di-title">支持后续分析、复核与报告输出</div><div class="di-desc">开放数据接口，可对接 MATLAB、Python、自研算法平台进行深度分析。</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="data-visual">
+        <div style="font-size:13px;font-weight:700;color:#334155;margin-bottom:16px">📊 实验元数据示例</div>
+        <div class="dv-row">
+          <div class="dv-dot" style="background:#3b82f6"></div>
+          <div class="dv-key">实验 ID</div>
+          <div class="dv-val">EXP-2026-0409-001</div>
+        </div>
+        <div class="dv-row">
+          <div class="dv-dot" style="background:#06b6d4"></div>
+          <div class="dv-key">孔板类型</div>
+          <div class="dv-val">96-well / Corning</div>
+        </div>
+        <div class="dv-row">
+          <div class="dv-dot" style="background:#34d399"></div>
+          <div class="dv-key">当前孔位</div>
+          <div class="dv-val">B05 → C05</div>
+        </div>
+        <div class="dv-row">
+          <div class="dv-dot" style="background:#f59e0b"></div>
+          <div class="dv-key">时间点</div>
+          <div class="dv-val">T+2h / 总计 24h</div>
+        </div>
+        <div class="dv-row">
+          <div class="dv-dot" style="background:#8b5cf6"></div>
+          <div class="dv-key">焦点偏移 Z</div>
+          <div class="dv-val">+1.23 µm</div>
+        </div>
+        <div class="dv-row">
+          <div class="dv-dot" style="background:#ec4899"></div>
+          <div class="dv-key">采集图像数</div>
+          <div class="dv-val">1,248 / 9,216</div>
+        </div>
+        <div class="dv-log">
+          <div class="log-line"><span class="ts">[22:14:03]</span> <span class="ok">✓</span> AF success at B04, Z=12.45µm</div>
+          <div class="log-line"><span class="ts">[22:14:08]</span> <span class="ok">✓</span> Image saved: B04_T2h_FOV1.tif</div>
+          <div class="log-line"><span class="ts">[22:14:15]</span> <span class="inf">→</span> Moving to B05 (XY stage)</div>
+          <div class="log-line"><span class="ts">[22:14:22]</span> <span class="ok">✓</span> AF success at B05, Z=12.38µm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section id="cta">
+  <div class="cta-inner section-inner">
+    <div class="text-center">
+      <h2 class="cta-title">构建下一代活细胞监测自动化平台</h2>
+      <p class="cta-sub">从孔板模板管理，到底层硬件控制，再到实验任务调度与数据追踪，提供完整的软件化方案。</p>
+      <div class="cta-actions">
+        <a href="#" class="btn-white">获取方案文档</a>
+        <a href="#" class="btn-ghost">联系我们</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">CellScope Pro</div>
+      <p>活细胞监测自动化控制平台，面向科研与研发场景的完整硬件软件解决方案。</p>
+    </div>
+    <div class="footer-col">
+      <h4>产品</h4>
+      <a href="#">核心能力</a>
+      <a href="#">系统架构</a>
+      <a href="#">方案文档</a>
+      <a href="#">版本更新</a>
+    </div>
+    <div class="footer-col">
+      <h4>资源</h4>
+      <a href="#">技术白皮书</a>
+      <a href="#">API 文档</a>
+      <a href="#">示例数据</a>
+      <a href="#">常见问题</a>
+    </div>
+    <div class="footer-col">
+      <h4>联系</h4>
+      <a href="#">预约演示</a>
+      <a href="#">技术支持</a>
+      <a href="#">商务合作</a>
+      <a href="#">关于我们</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CellScope Pro · 活细胞监测自动化控制平台</span>
+    <span>专注精密成像自动化 · 生命科学仪器软件</span>
+  </div>
+</footer>
+
+<script>
+// ===== Generate Hero Well Grid =====
+(function() {
+  const rows = ['A','B','C','D','E','F','G','H'];
+  const container = document.getElementById('wellRows');
+  const doneCount = 34; // wells done
+  let wellIndex = 0;
+  let html = '';
+  rows.forEach((row, ri) => {
+    html += `<div class="well-grid" style="margin-bottom:3px">
+      <div class="well-row-label">${row}</div>`;
+    for (let c = 1; c <= 12; c++) {
+      const idx = ri * 12 + (c - 1);
+      let cls = '';
+      if (idx < doneCount - 1) cls = 'done';
+      else if (idx === doneCount - 1) cls = 'scanning';
+      else cls = '';
+      html += `<div class="well ${cls}" style="width:100%;aspect-ratio:1;border-radius:50%;border:1.5px solid #bfdbfe;background:rgba(219,234,254,0.3)"></div>`;
+    }
+    html += '</div>';
+    wellIndex += 12;
+  });
+  container.innerHTML = html;
+  // Apply colors via querySelectorAll after render
+  setTimeout(() => {
+    const wells = document.querySelectorAll('#wellRows .well');
+    wells.forEach((w, i) => {
+      if (i < doneCount - 1) {
+        w.style.background = 'linear-gradient(135deg, #34d399, #06b6d4)';
+        w.style.borderColor = 'transparent';
+      } else if (i === doneCount - 1) {
+        w.style.background = 'linear-gradient(135deg, #2563eb, #0891b2)';
+        w.style.borderColor = 'transparent';
+        w.style.boxShadow = '0 0 10px rgba(37,99,235,0.7)';
+        w.style.animation = 'cur 1s infinite';
+      }
+    });
+  }, 50);
+})();
+
+// ===== Full Plate Visualization =====
+(function() {
+  const rows = ['A','B','C','D','E','F','G','H'];
+  const container = document.getElementById('fullPlateViz');
+  const doneWells = 26;
+  let html = '';
+
+  // Col labels
+  html += '<div style="display:grid;grid-template-columns:20px repeat(12,1fr);gap:3px;margin-bottom:4px">';
+  html += '<div></div>';
+  for (let c = 1; c <= 12; c++) html += `<div style="font-size:8px;text-align:center;color:#94a3b8;font-weight:600">${c}</div>`;
+  html += '</div>';
+
+  // Snake path: row 0 L→R, row 1 R→L, etc.
+  let wellIdx = 0;
+  rows.forEach((row, ri) => {
+    html += `<div style="display:grid;grid-template-columns:20px repeat(12,1fr);gap:3px;margin-bottom:3px">`;
+    html += `<div style="font-size:8px;color:#94a3b8;font-weight:600;display:flex;align-items:center;justify-content:center">${row}</div>`;
+
+    const cols = ri % 2 === 0 ? Array.from({length:12},(_,i)=>i) : Array.from({length:12},(_,i)=>11-i);
+    // re-order back to visual order
+    const display = new Array(12);
+    cols.forEach((realCol, order) => {
+      const linearIdx = ri * 12 + (ri % 2 === 0 ? realCol : (11 - order));
+      let bg = '', border = '';
+      if (linearIdx < doneWells - 1) {
+        bg = 'linear-gradient(135deg,#34d399,#06b6d4)'; border = 'transparent';
+      } else if (linearIdx === doneWells - 1) {
+        bg = 'linear-gradient(135deg,#2563eb,#0891b2)'; border = 'transparent';
+      } else {
+        bg = 'rgba(219,234,254,0.2)'; border = '#bfdbfe';
+      }
+      display[realCol] = `<div style="aspect-ratio:1;border-radius:50%;border:1px solid ${border};background:${bg}${linearIdx===doneWells-1?';box-shadow:0 0 8px rgba(37,99,235,0.6);animation:cur 1s infinite':''}"></div>`;
+    });
+    display.forEach(d => html += d);
+    html += '</div>';
+  });
+  container.innerHTML = html;
+})();
+
+// ===== FOV Tab switcher =====
+function setFovMode(el, mode) {
+  document.querySelectorAll('.fov-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.fov-display').forEach(d => d.style.display='none');
+  const map = {center:'fovCenter', four:'fovFour', nine:'fovNine'};
+  document.getElementById(map[mode]).style.display='block';
+}
+
+// ===== Animate scanning well =====
+setInterval(() => {
+  const wells = document.querySelectorAll('#wellRows .well');
+  // simple pulse just via CSS animation - already applied
+}, 1000);
+</script>
+
+</body>
+</html>
