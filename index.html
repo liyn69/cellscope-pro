@@ -126,6 +126,18 @@
     background: var(--blue-500);
     animation: pulse 2s infinite;
   }
+  .ai-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    animation: pulse 2s infinite;
+    display: inline-block;
+  }
+  .ai-tag {
+    background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(236,72,153,0.15)) !important;
+    border-color: rgba(139,92,246,0.3) !important;
+    color: #7c3aed !important;
+    font-weight: 700 !important;
+  }
   @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.4; }
@@ -735,12 +747,12 @@
     CellScope Pro
   </div>
   <div class="nav-links">
+    <a href="#ai-agent" style="color:#7c3aed;font-weight:600;">🤖 AI智能体</a>
     <a href="#capabilities">核心能力</a>
     <a href="#workflow">控制流程</a>
     <a href="#platescan">孔板扫描</a>
     <a href="#statemachine">状态机</a>
     <a href="#scenarios">应用场景</a>
-    <a href="#data">数据管理</a>
   </div>
   <a href="#cta" class="nav-cta">预约演示</a>
 </nav>
@@ -754,13 +766,17 @@
   </div>
   <div class="hero-inner">
     <div class="hero-content">
-      <div class="hero-badge">新一代活细胞成像控制系统</div>
+      <div class="hero-badge">
+        <span class="ai-dot"></span>
+        AI 实验智能体驱动
+      </div>
       <h1 class="hero-title">
         活细胞监测<br>
-        <span class="highlight">自动化控制平台</span>
+        <span class="highlight">AI 实验智能体</span>
       </h1>
       <p class="hero-sub">
-        支持 96 孔板、多孔板模板、孔板巡扫、孔内多视野扫描、自动对焦与时间序列成像，构建面向科研与研发场景的一体化实验监测系统。
+        用对话定义实验，让 AI 驱动观测。基于 96 孔板的智能实验设计、自适应参数推荐、实时细胞状态分析，
+        从"人操作软件"升级为"AI 理解实验并自主执行"的新范式。
       </p>
       <div class="hero-actions">
         <a href="#architecture" class="btn-primary">
@@ -778,12 +794,12 @@
         </a>
       </div>
       <div class="hero-tags">
+        <span class="hero-tag ai-tag">🤖 AI 智能体</span>
         <span class="hero-tag">96孔板支持</span>
-        <span class="hero-tag">蛇形巡扫</span>
-        <span class="hero-tag">自动对焦</span>
-        <span class="hero-tag">时序成像</span>
-        <span class="hero-tag">硬件闭环控制</span>
-        <span class="hero-tag">异常自恢复</span>
+        <span class="hero-tag">自然语言实验</span>
+        <span class="hero-tag">自适应参数</span>
+        <span class="hero-tag">实时细胞分析</span>
+        <span class="hero-tag">智能预警</span>
       </div>
     </div>
 
@@ -843,6 +859,111 @@
           </div>
         </div>
         <div class="float-badge">✓ 自动对焦 <span>已就绪</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AI AGENT ===== -->
+<section id="ai-agent" style="background:linear-gradient(180deg,#f8fafc 0%,#fff 100%);padding:100px 5%;">
+  <div class="section-inner" style="max-width:1200px;margin:0 auto;">
+    <div class="text-center" style="margin-bottom:60px">
+      <div class="section-label" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);color:white;">AI 实验智能体</div>
+      <h2 class="section-title" style="font-size:38px;margin-bottom:16px;">不是让用户学会复杂软件<br>而是让系统学会理解实验</h2>
+      <p class="section-sub mx-auto" style="max-width:640px;color:var(--gray-600);">
+        传统软件是"工具"，AI 智能体是"实验协作者"。通过自然语言对话完成实验设计、参数配置、自动采集与实时分析，
+        实现从"人操作软件"到"AI 驱动实验"的范式转变。
+      </p>
+    </div>
+    
+    <!-- AI Agent Roles -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-bottom:60px;">
+      <!-- Role 1 -->
+      <div class="ai-role-card" style="background:white;border-radius:16px;padding:28px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(139,92,246,0.08);transition:all 0.3s;">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#8b5cf6,#a78bfa);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:24px;">💬</div>
+        <h3 style="font-size:18px;font-weight:700;color:var(--gray-800);margin-bottom:8px;">实验设计助手</h3>
+        <p style="font-size:14px;color:var(--gray-600);line-height:1.7;">
+          "帮我做一个 96 孔板药筛实验，每 30 分钟拍一次，持续 48 小时"<br><br>
+          AI 自动识别实验类型，生成匹配模板，补全缺失参数，将自然语言转换为可执行实验计划。
+        </p>
+      </div>
+      <!-- Role 2 -->
+      <div class="ai-role-card" style="background:white;border-radius:16px;padding:28px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(139,92,246,0.08);transition:all 0.3s;">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#06b6d4,#22d3ee);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:24px;">⚙️</div>
+        <h3 style="font-size:18px;font-weight:700;color:var(--gray-800);margin-bottom:8px;">参数优化师</h3>
+        <p style="font-size:14px;color:var(--gray-600);line-height:1.7;">
+          基于细胞密度、贴壁情况、汇合度自动推荐曝光、增益、对焦策略。实验运行中持续优化，细胞变密自动减曝光，运动变快提高采样频率。
+        </p>
+      </div>
+      <!-- Role 3 -->
+      <div class="ai-role-card" style="background:white;border-radius:16px;padding:28px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(139,92,246,0.08);transition:all 0.3s;">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:24px;">🎯</div>
+        <h3 style="font-size:18px;font-weight:700;color:var(--gray-800);margin-bottom:8px;">硬件调度员</h3>
+        <p style="font-size:14px;color:var(--gray-600);line-height:1.7;">
+          智能决定扫描哪些孔、扫描顺序、高频/低频监测策略。从"固定定时扫描"升级为"事件感知扫描"，细胞异常时自动触发加密采样。
+        </p>
+      </div>
+      <!-- Role 4 -->
+      <div class="ai-role-card" style="background:white;border-radius:16px;padding:28px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(139,92,246,0.08);transition:all 0.3s;">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#10b981,#34d399);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:24px;">🔬</div>
+        <h3 style="font-size:18px;font-weight:700;color:var(--gray-800);margin-bottom:8px;">细胞状态分析员</h3>
+        <p style="font-size:14px;color:var(--gray-600);line-height:1.7;">
+          实时识别细胞圆缩、凋亡、聚团异常、迁移行为变化。不只是输出数字，而是给出可理解的结论："B4 孔细胞密度增长缓慢，低于同组平均水平"。
+        </p>
+      </div>
+      <!-- Role 5 -->
+      <div class="ai-role-card" style="background:white;border-radius:16px;padding:28px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(139,92,246,0.08);transition:all 0.3s;">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#ef4444,#f87171);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:24px;">⚠️</div>
+        <h3 style="font-size:18px;font-weight:700;color:var(--gray-800);margin-bottom:8px;">风险预警官</h3>
+        <p style="font-size:14px;color:var(--gray-600);line-height:1.7;">
+          主动发现焦点漂移、光漂白风险、细胞死亡率上升、设备异常。不只是预警，还给出建议："建议降低曝光 15%，以减少光毒性风险"。
+        </p>
+      </div>
+      <!-- Role 6 -->
+      <div class="ai-role-card" style="background:white;border-radius:16px;padding:28px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(139,92,246,0.08);transition:all 0.3s;">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#818cf8);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:24px;">📊</div>
+        <h3 style="font-size:18px;font-weight:700;color:var(--gray-800);margin-bottom:8px;">实验总结员</h3>
+        <p style="font-size:14px;color:var(--gray-600);line-height:1.7;">
+          实验结束后自动生成分析报告、关键趋势、异常孔位列表、药物响应时间点。将成功流程沉淀为可复用模板，实现团队知识积累。
+        </p>
+      </div>
+    </div>
+    
+    <!-- AI Conversation Demo -->
+    <div style="background:linear-gradient(135deg,#1e1b4b 0%,#312e81 100%);border-radius:20px;padding:40px;color:white;">
+      <div style="text-align:center;margin-bottom:32px;">
+        <div style="font-size:14px;color:#a5b4fc;margin-bottom:8px;">自然语言实验配置示例</div>
+        <div style="font-size:20px;font-weight:700;">用对话定义实验，用 AI 驱动观测</div>
+      </div>
+      <div style="max-width:720px;margin:0 auto;">
+        <div style="display:flex;gap:12px;margin-bottom:20px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#ec4899);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;">U</div>
+          <div style="background:rgba(255,255,255,0.1);border-radius:12px 12px 12px 4px;padding:14px 18px;flex:1;">
+            <div style="font-size:14px;line-height:1.6;">帮我做一个 96 孔板药筛实验，每 30 分钟拍一次，持续 48 小时。重点关注细胞形态变化。</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;margin-bottom:20px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;">AI</div>
+          <div style="background:rgba(6,182,212,0.2);border-radius:12px 12px 4px 12px;padding:14px 18px;flex:1;">
+            <div style="font-size:14px;line-height:1.6;margin-bottom:12px;">
+              ✅ 已为您生成药筛实验模板：<br>
+              • 孔板：96 孔板，全板扫描<br>
+              • 频率：每 30 分钟采集一次<br>
+              • 时长：48 小时（96 个时间点）<br>
+              • 每孔视野：9 点扫描（兼顾覆盖率与效率）<br>
+              • 对焦策略：每孔自动对焦 + 漂移补偿
+            </div>
+            <div style="font-size:13px;color:#a5b4fc;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);">
+              💡 AI 建议：检测到您关注形态变化，已启用细胞圆缩/凋亡识别模块，将在实验过程中实时分析并预警异常孔位。
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#ec4899);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;">U</div>
+          <div style="background:rgba(255,255,255,0.1);border-radius:12px 12px 12px 4px;padding:14px 18px;flex:1;">
+            <div style="font-size:14px;line-height:1.6;">降低光毒性，但还要保证分割效果</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
