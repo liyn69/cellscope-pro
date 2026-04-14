@@ -1768,17 +1768,21 @@
 
     <!-- Top Stats -->
     <div class="dev-stats-row">
-      <div class="dev-stat">
+      <div class="dev-stat" style="cursor:pointer;" onclick="openProjectSettings()" title="点击编辑项目设置">
         <div class="dev-stat-val" id="statDays">—</div>
-        <div class="dev-stat-lbl">项目进行天数</div>
+        <div class="dev-stat-lbl">项目进行天数 <span style="font-size:11px;color:#64748b;">(点击编辑)</span></div>
       </div>
       <div class="dev-stat">
-        <div class="dev-stat-val">6</div>
+        <div class="dev-stat-val" id="statAgents">6</div>
         <div class="dev-stat-lbl">AI 智能体角色</div>
       </div>
       <div class="dev-stat">
         <div class="dev-stat-val" id="statDocs">0</div>
         <div class="dev-stat-lbl">已上传文档</div>
+      </div>
+      <div class="dev-stat">
+        <div class="dev-stat-val" id="statMilestones">—</div>
+        <div class="dev-stat-lbl">里程碑完成</div>
       </div>
       <div class="dev-stat">
         <div class="dev-stat-val">68%</div>
@@ -1798,179 +1802,21 @@
 
     <!-- ===== TAB: Timeline ===== -->
     <div id="devTab-timeline" class="dev-panel active">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="font-size:13px;color:#64748b;">点击卡片可编辑，拖拽可排序</div>
+        <button onclick="openTimelineModal()" style="background:linear-gradient(135deg,#2563eb,#0891b2);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;">＋ 添加里程碑</button>
+      </div>
       <div style="display:grid;grid-template-columns:1fr 320px;gap:48px;align-items:start;">
-        <div class="timeline">
-
-          <div class="tl-item">
-            <div class="tl-dot done"></div>
-            <div class="tl-card">
-              <div class="tl-meta">
-                <span class="tl-date">2025-10</span>
-                <span class="tl-badge done">✓ 已完成</span>
-              </div>
-              <div class="tl-title">项目立项 · 需求调研</div>
-              <div class="tl-desc">完成实验室活细胞观测需求调研，确定 CellScope Pro 核心功能范围：96孔板支持、自动对焦、时间序列采集，明确软件化方向。</div>
-              <div class="tl-tags">
-                <span class="tl-tag">需求调研</span><span class="tl-tag">立项文档</span><span class="tl-tag">实验室访谈</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-dot done"></div>
-            <div class="tl-card">
-              <div class="tl-meta">
-                <span class="tl-date">2025-11</span>
-                <span class="tl-badge done">✓ 已完成</span>
-              </div>
-              <div class="tl-title">硬件抽象层（HAL）设计与实现</div>
-              <div class="tl-desc">完成 XY 载物台、Z轴驱动、相机模块、光源控制器的统一驱动接口设计。实现硬件设备热插拔检测与安全互锁逻辑。</div>
-              <div class="tl-tags">
-                <span class="tl-tag">HAL</span><span class="tl-tag">驱动开发</span><span class="tl-tag">Python</span><span class="tl-tag">硬件通信</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-dot done"></div>
-            <div class="tl-card">
-              <div class="tl-meta">
-                <span class="tl-date">2025-12</span>
-                <span class="tl-badge done">✓ 已完成</span>
-              </div>
-              <div class="tl-title">孔板模板系统 + 路径规划引擎</div>
-              <div class="tl-desc">构建多规格孔板（6/12/24/48/96孔）参数化模板系统，实现蛇形巡扫、行扫、自定义优先级三种路径规划算法。96孔板单轮巡扫时间缩短 38%。</div>
-              <div class="tl-tags">
-                <span class="tl-tag">路径规划</span><span class="tl-tag">96孔板</span><span class="tl-tag">算法优化</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-dot done"></div>
-            <div class="tl-card">
-              <div class="tl-meta">
-                <span class="tl-date">2026-01</span>
-                <span class="tl-badge done">✓ 已完成</span>
-              </div>
-              <div class="tl-title">状态机 + 任务调度核心引擎</div>
-              <div class="tl-desc">实现 9 态状态机（Idle→Init→Ready→Running→Waiting→Paused→Error→Recovering→Stopped），支持异常自动恢复、断点续扫、任务队列动态插入。</div>
-              <div class="tl-tags">
-                <span class="tl-tag">状态机</span><span class="tl-tag">调度引擎</span><span class="tl-tag">异常恢复</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-dot done"></div>
-            <div class="tl-card">
-              <div class="tl-meta">
-                <span class="tl-date">2026-02</span>
-                <span class="tl-badge done">✓ 已完成</span>
-              </div>
-              <div class="tl-title">UI 控制面板 v1.0 发布</div>
-              <div class="tl-desc">完成实验配置界面、实时监控仪表盘、孔板可视化预览模块。用户可通过 GUI 完成全流程实验配置，无需命令行操作。</div>
-              <div class="tl-tags">
-                <span class="tl-tag">UI设计</span><span class="tl-tag">PyQt6</span><span class="tl-tag">实时监控</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-dot done"></div>
-            <div class="tl-card">
-              <div class="tl-meta">
-                <span class="tl-date">2026-03</span>
-                <span class="tl-badge done">✓ 已完成</span>
-              </div>
-              <div class="tl-title">TIE 相位恢复算法集成</div>
-              <div class="tl-desc">将 TIE（Transport of Intensity Equation）定量相位成像算法集成至数据处理管线，实现无标记细胞形态定量分析，输出相位图与厚度伪色图。</div>
-              <div class="tl-tags">
-                <span class="tl-tag">TIE算法</span><span class="tl-tag">定量相位成像</span><span class="tl-tag">无标记</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-dot active"></div>
-            <div class="tl-card" style="border-color:rgba(96,165,250,0.3);">
-              <div class="tl-meta">
-                <span class="tl-date">2026-04 · 当前</span>
-                <span class="tl-badge active">⚡ 进行中</span>
-              </div>
-              <div class="tl-title">AI 实验智能体系统集成</div>
-              <div class="tl-desc">正在将 6 个 AI 智能体角色（实验设计助手、参数优化师、硬件调度员、细胞状态分析员、风险预警官、实验总结员）集成至 CellScope Pro 控制平台，构建自然语言实验配置接口。</div>
-              <div class="tl-tags">
-                <span class="tl-tag">AI Agent</span><span class="tl-tag">LLM集成</span><span class="tl-tag">自然语言接口</span><span class="tl-tag">实验自动化</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-dot plan"></div>
-            <div class="tl-card" style="opacity:0.65;">
-              <div class="tl-meta">
-                <span class="tl-date">2026-05</span>
-                <span class="tl-badge plan">🗓 计划中</span>
-              </div>
-              <div class="tl-title">多用户协作与云端数据同步</div>
-              <div class="tl-desc">支持实验室多台设备数据汇总、实验结果共享、AI 分析报告云端存档，构建团队协作实验管理平台。</div>
-              <div class="tl-tags">
-                <span class="tl-tag">多用户</span><span class="tl-tag">云同步</span><span class="tl-tag">协作平台</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="tl-item" style="margin-bottom:0">
-            <div class="tl-dot plan"></div>
-            <div class="tl-card" style="opacity:0.55;">
-              <div class="tl-meta">
-                <span class="tl-date">2026-06</span>
-                <span class="tl-badge plan">🗓 计划中</span>
-              </div>
-              <div class="tl-title">v2.0 发布 · 论文撰写配套工具</div>
-              <div class="tl-desc">配合学位论文第3、5章送审，完成平台验证实验数据采集，发布完整 API 文档与二次开发接口，支持外部算法模块对接。</div>
-              <div class="tl-tags">
-                <span class="tl-tag">v2.0</span><span class="tl-tag">论文验证</span><span class="tl-tag">API文档</span>
-              </div>
-            </div>
-          </div>
-
+        <div class="timeline" id="timelineContainer">
+          <!-- Timeline items rendered by JS -->
         </div>
 
         <!-- Right panel: quick summary -->
         <div>
           <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:16px;padding:24px;margin-bottom:20px;">
             <div style="font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:16px;">📌 关键里程碑</div>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div style="display:flex;align-items:center;gap:10px;">
-                <span style="color:#34d399;font-size:14px;">✓</span>
-                <span style="font-size:13px;color:#cbd5e1;">HAL 驱动层完成</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px;">
-                <span style="color:#34d399;font-size:14px;">✓</span>
-                <span style="font-size:13px;color:#cbd5e1;">96孔板路径规划引擎</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px;">
-                <span style="color:#34d399;font-size:14px;">✓</span>
-                <span style="font-size:13px;color:#cbd5e1;">状态机核心引擎</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px;">
-                <span style="color:#34d399;font-size:14px;">✓</span>
-                <span style="font-size:13px;color:#cbd5e1;">TIE 相位算法集成</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px;">
-                <span style="color:#60a5fa;font-size:14px;">⚡</span>
-                <span style="font-size:13px;color:#93c5fd;font-weight:600;">AI Agent 系统集成 ← 当前</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px;">
-                <span style="color:#475569;font-size:14px;">○</span>
-                <span style="font-size:13px;color:#475569;">云端协作平台</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px;">
-                <span style="color:#475569;font-size:14px;">○</span>
-                <span style="font-size:13px;color:#475569;">v2.0 正式发布</span>
-              </div>
+            <div id="milestoneSummary" style="display:flex;flex-direction:column;gap:10px;">
+              <!-- Rendered by JS -->
             </div>
           </div>
 
@@ -1989,139 +1835,32 @@
 
     <!-- ===== TAB: Progress ===== -->
     <div id="devTab-progress" class="dev-panel">
-      <div class="progress-grid">
-        <div class="prog-card">
-          <div class="prog-label">整体完成进度</div>
-          <div class="prog-val">68%</div>
-          <div class="prog-sub">7 / 9 个主要里程碑</div>
-          <div class="prog-bar-wrap"><div class="prog-bar" style="width:68%"></div></div>
-        </div>
-        <div class="prog-card">
-          <div class="prog-label">当前 Sprint 进度</div>
-          <div class="prog-val">45%</div>
-          <div class="prog-sub">AI Agent 集成 · 第 2 周</div>
-          <div class="prog-bar-wrap"><div class="prog-bar" style="width:45%;background:linear-gradient(90deg,#8b5cf6,#ec4899)"></div></div>
-        </div>
-        <div class="prog-card">
-          <div class="prog-label">代码覆盖率</div>
-          <div class="prog-val">82%</div>
-          <div class="prog-sub">核心模块单元测试</div>
-          <div class="prog-bar-wrap"><div class="prog-bar" style="width:82%;background:linear-gradient(90deg,#34d399,#06b6d4)"></div></div>
-        </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="font-size:13px;color:#64748b;">点击进度条或百分比可编辑数值</div>
+        <button onclick="openProgressSettings()" style="background:rgba(255,255,255,0.08);color:#94a3b8;border:1px solid rgba(255,255,255,0.15);padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;">⚙️ 编辑设置</button>
+      </div>
+      <div class="progress-grid" id="progressCards">
+        <!-- Rendered by JS -->
       </div>
 
       <div style="margin-bottom:28px;">
-        <div style="font-size:15px;font-weight:700;color:#e2e8f0;margin-bottom:16px;">模块开发状态</div>
-        <div class="module-grid">
-          <div class="module-row">
-            <div class="mod-status-dot mod-done"></div>
-            <div class="mod-name">硬件抽象层 (HAL)</div>
-            <div class="mod-pct">100%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-done"></div>
-            <div class="mod-name">孔板模板系统</div>
-            <div class="mod-pct">100%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-done"></div>
-            <div class="mod-name">路径规划引擎</div>
-            <div class="mod-pct">100%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-done"></div>
-            <div class="mod-name">状态机核心</div>
-            <div class="mod-pct">100%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-done"></div>
-            <div class="mod-name">任务调度器</div>
-            <div class="mod-pct">95%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-done"></div>
-            <div class="mod-name">自动对焦模块</div>
-            <div class="mod-pct">90%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-done"></div>
-            <div class="mod-name">TIE 相位算法</div>
-            <div class="mod-pct">85%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-done"></div>
-            <div class="mod-name">UI 控制面板 v1</div>
-            <div class="mod-pct">85%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-wip"></div>
-            <div class="mod-name">实验设计助手 Agent</div>
-            <div class="mod-pct">60%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-wip"></div>
-            <div class="mod-name">参数优化师 Agent</div>
-            <div class="mod-pct">40%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-wip"></div>
-            <div class="mod-name">细胞状态分析 Agent</div>
-            <div class="mod-pct">35%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-wip"></div>
-            <div class="mod-name">风险预警 Agent</div>
-            <div class="mod-pct">25%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-plan"></div>
-            <div class="mod-name">实验总结员 Agent</div>
-            <div class="mod-pct">10%</div>
-          </div>
-          <div class="module-row">
-            <div class="mod-status-dot mod-plan"></div>
-            <div class="mod-name">云端协作平台</div>
-            <div class="mod-pct">0%</div>
-          </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div style="font-size:15px;font-weight:700;color:#e2e8f0;">模块开发状态</div>
+          <button onclick="openModuleModal()" style="background:linear-gradient(135deg,#2563eb,#0891b2);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;">＋ 添加模块</button>
+        </div>
+        <div class="module-grid" id="moduleGrid">
+          <!-- Rendered by JS -->
         </div>
       </div>
 
       <!-- Weekly chart -->
       <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:16px;padding:28px;">
-        <div style="font-size:15px;font-weight:700;color:#e2e8f0;margin-bottom:20px;">近 8 周开发活跃度</div>
-        <div style="display:flex;align-items:flex-end;gap:8px;height:100px;padding-bottom:4px;">
-          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1">
-            <div style="flex:0;background:linear-gradient(180deg,#3b82f6,#1e40af);width:100%;border-radius:4px 4px 0 0" data-h="55"></div>
-            <div style="font-size:10px;color:#475569;">W1</div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1">
-            <div style="background:linear-gradient(180deg,#3b82f6,#1e40af);width:100%;border-radius:4px 4px 0 0" data-h="70"></div>
-            <div style="font-size:10px;color:#475569;">W2</div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1">
-            <div style="background:linear-gradient(180deg,#3b82f6,#1e40af);width:100%;border-radius:4px 4px 0 0" data-h="45"></div>
-            <div style="font-size:10px;color:#475569;">W3</div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1">
-            <div style="background:linear-gradient(180deg,#3b82f6,#1e40af);width:100%;border-radius:4px 4px 0 0" data-h="88"></div>
-            <div style="font-size:10px;color:#475569;">W4</div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1">
-            <div style="background:linear-gradient(180deg,#3b82f6,#1e40af);width:100%;border-radius:4px 4px 0 0" data-h="62"></div>
-            <div style="font-size:10px;color:#475569;">W5</div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1">
-            <div style="background:linear-gradient(180deg,#3b82f6,#1e40af);width:100%;border-radius:4px 4px 0 0" data-h="76"></div>
-            <div style="font-size:10px;color:#475569;">W6</div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1">
-            <div style="background:linear-gradient(180deg,#8b5cf6,#6d28d9);width:100%;border-radius:4px 4px 0 0" data-h="92"></div>
-            <div style="font-size:10px;color:#475569;">W7</div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1">
-            <div style="background:linear-gradient(180deg,#f59e0b,#d97706);width:100%;border-radius:4px 4px 0 0" data-h="40"></div>
-            <div style="font-size:10px;color:#94a3b8;font-weight:600;">W8·本周</div>
-          </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <div style="font-size:15px;font-weight:700;color:#e2e8f0;">近 8 周开发活跃度</div>
+          <button onclick="openWeeklyChartModal()" style="background:rgba(255,255,255,0.08);color:#94a3b8;border:1px solid rgba(255,255,255,0.15);padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;">编辑数据</button>
+        </div>
+        <div id="weeklyChart" style="display:flex;align-items:flex-end;gap:8px;height:100px;padding-bottom:4px;">
+          <!-- Rendered by JS -->
         </div>
         <div style="margin-top:12px;display:flex;gap:16px;">
           <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#475569;">
@@ -2209,6 +1948,62 @@
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeUploadModal()">取消</button>
       <button class="modal-submit" onclick="submitDoc()">✓ 添加</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Timeline Modal ===== -->
+<div class="modal-overlay" id="timelineModal">
+  <div class="modal-box">
+    <div class="modal-title" id="tlModalTitle">添加里程碑</div>
+    <div class="form-group">
+      <label class="form-label">日期 *</label>
+      <input class="form-input" id="tlDate" placeholder="例：2026-04 · 当前" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">状态 *</label>
+      <select class="form-select" id="tlStatus">
+        <option value="done">✓ 已完成</option>
+        <option value="active">⚡ 进行中</option>
+        <option value="plan">🗓 计划中</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">标题 *</label>
+      <input class="form-input" id="tlTitle" placeholder="里程碑标题" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">描述</label>
+      <textarea class="form-textarea" id="tlDesc" placeholder="详细描述..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">标签（用逗号分隔）</label>
+      <input class="form-input" id="tlTags" placeholder="例：AI Agent, LLM集成, 实验自动化" />
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeTimelineModal()">取消</button>
+      <button class="modal-cancel" onclick="deleteTimelineItem()" style="color:#ef4444;margin-right:auto;">删除</button>
+      <button class="modal-submit" onclick="saveTimelineItem()">✓ 保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Module Modal ===== -->
+<div class="modal-overlay" id="moduleModal">
+  <div class="modal-box">
+    <div class="modal-title" id="modModalTitle">添加模块</div>
+    <div class="form-group">
+      <label class="form-label">模块名称 *</label>
+      <input class="form-input" id="modName" placeholder="例：实验设计助手 Agent" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">完成进度 (0-100) *</label>
+      <input class="form-input" id="modPct" type="number" min="0" max="100" value="0" />
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModuleModal()">取消</button>
+      <button class="modal-cancel" onclick="deleteModule()" style="color:#ef4444;margin-right:auto;">删除</button>
+      <button class="modal-submit" onclick="saveModule()">✓ 保存</button>
     </div>
   </div>
 </div>
@@ -2359,23 +2154,357 @@ setInterval(() => {
 
 // ===== DEV ZONE =====
 
-// --- Compute project days ---
-(function() {
-  const start = new Date('2025-10-01');
+// --- Storage Keys ---
+const STORAGE = {
+  timeline: 'cellscope_timeline_v1',
+  progress: 'cellscope_progress_v1',
+  modules: 'cellscope_modules_v1',
+  weekly: 'cellscope_weekly_v1',
+  project: 'cellscope_project_v1',
+  docs: 'cellscope_docs_v1'
+};
+
+// --- Default Data ---
+const DEFAULT_TIMELINE = [
+  { id: '1', date: '2025-10', status: 'done', title: '项目立项 · 需求调研', desc: '完成实验室活细胞观测需求调研，确定 CellScope Pro 核心功能范围：96孔板支持、自动对焦、时间序列采集，明确软件化方向。', tags: ['需求调研','立项文档','实验室访谈'] },
+  { id: '2', date: '2025-11', status: 'done', title: '硬件抽象层（HAL）设计与实现', desc: '完成 XY 载物台、Z轴驱动、相机模块、光源控制器的统一驱动接口设计。实现硬件设备热插拔检测与安全互锁逻辑。', tags: ['HAL','驱动开发','Python','硬件通信'] },
+  { id: '3', date: '2025-12', status: 'done', title: '孔板模板系统 + 路径规划引擎', desc: '构建多规格孔板（6/12/24/48/96孔）参数化模板系统，实现蛇形巡扫、行扫、自定义优先级三种路径规划算法。96孔板单轮巡扫时间缩短 38%。', tags: ['路径规划','96孔板','算法优化'] },
+  { id: '4', date: '2026-01', status: 'done', title: '状态机 + 任务调度核心引擎', desc: '实现 9 态状态机（Idle→Init→Ready→Running→Waiting→Paused→Error→Recovering→Stopped），支持异常自动恢复、断点续扫、任务队列动态插入。', tags: ['状态机','调度引擎','异常恢复'] },
+  { id: '5', date: '2026-02', status: 'done', title: 'UI 控制面板 v1.0 发布', desc: '完成实验配置界面、实时监控仪表盘、孔板可视化预览模块。用户可通过 GUI 完成全流程实验配置，无需命令行操作。', tags: ['UI设计','PyQt6','实时监控'] },
+  { id: '6', date: '2026-03', status: 'done', title: 'TIE 相位恢复算法集成', desc: '将 TIE（Transport of Intensity Equation）定量相位成像算法集成至数据处理管线，实现无标记细胞形态定量分析，输出相位图与厚度伪色图。', tags: ['TIE算法','定量相位成像','无标记'] },
+  { id: '7', date: '2026-04 · 当前', status: 'active', title: 'AI 实验智能体系统集成', desc: '正在将 6 个 AI 智能体角色（实验设计助手、参数优化师、硬件调度员、细胞状态分析员、风险预警官、实验总结员）集成至 CellScope Pro 控制平台，构建自然语言实验配置接口。', tags: ['AI Agent','LLM集成','自然语言接口','实验自动化'] },
+  { id: '8', date: '2026-05', status: 'plan', title: '多用户协作与云端数据同步', desc: '支持实验室多台设备数据汇总、实验结果共享、AI 分析报告云端存档，构建团队协作实验管理平台。', tags: ['多用户','云同步','协作平台'] },
+  { id: '9', date: '2026-06', status: 'plan', title: 'v2.0 发布 · 论文撰写配套工具', desc: '配合学位论文第3、5章送审，完成平台验证实验数据采集，发布完整 API 文档与二次开发接口，支持外部算法模块对接。', tags: ['v2.0','论文验证','API文档'] }
+];
+
+const DEFAULT_PROGRESS = [
+  { id: 'p1', label: '整体完成进度', value: 68, sub: '7 / 9 个主要里程碑', color: 'linear-gradient(90deg,#3b82f6,#2563eb)' },
+  { id: 'p2', label: '当前 Sprint 进度', value: 45, sub: 'AI Agent 集成 · 第 2 周', color: 'linear-gradient(90deg,#8b5cf6,#ec4899)' },
+  { id: 'p3', label: '代码覆盖率', value: 82, sub: '核心模块单元测试', color: 'linear-gradient(90deg,#34d399,#06b6d4)' }
+];
+
+const DEFAULT_MODULES = [
+  { id: 'm1', name: '硬件抽象层 (HAL)', pct: 100, status: 'done' },
+  { id: 'm2', name: '孔板模板系统', pct: 100, status: 'done' },
+  { id: 'm3', name: '路径规划引擎', pct: 100, status: 'done' },
+  { id: 'm4', name: '状态机核心', pct: 100, status: 'done' },
+  { id: 'm5', name: '任务调度器', pct: 95, status: 'done' },
+  { id: 'm6', name: '自动对焦模块', pct: 90, status: 'done' },
+  { id: 'm7', name: 'TIE 相位算法', pct: 85, status: 'done' },
+  { id: 'm8', name: 'UI 控制面板 v1', pct: 85, status: 'done' },
+  { id: 'm9', name: '实验设计助手 Agent', pct: 60, status: 'wip' },
+  { id: 'm10', name: '参数优化师 Agent', pct: 40, status: 'wip' },
+  { id: 'm11', name: '细胞状态分析 Agent', pct: 35, status: 'wip' },
+  { id: 'm12', name: '风险预警 Agent', pct: 25, status: 'wip' },
+  { id: 'm13', name: '实验总结员 Agent', pct: 10, status: 'plan' },
+  { id: 'm14', name: '云端协作平台', pct: 0, status: 'plan' }
+];
+
+const DEFAULT_WEEKLY = [
+  { week: 'W1', value: 55, type: 'normal' },
+  { week: 'W2', value: 70, type: 'normal' },
+  { week: 'W3', value: 45, type: 'normal' },
+  { week: 'W4', value: 88, type: 'normal' },
+  { week: 'W5', value: 62, type: 'normal' },
+  { week: 'W6', value: 76, type: 'normal' },
+  { week: 'W7', value: 92, type: 'ai' },
+  { week: 'W8·本周', value: 40, type: 'current' }
+];
+
+const DEFAULT_PROJECT = {
+  startDate: '2025-10-01',
+  agentCount: 6
+};
+
+// --- Data Helpers ---
+function getData(key, defaultVal) {
+  try { return JSON.parse(localStorage.getItem(key) || 'null') || defaultVal; }
+  catch(e) { return defaultVal; }
+}
+function setData(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+
+// --- Project Stats ---
+function updateProjectStats() {
+  const proj = getData(STORAGE.project, DEFAULT_PROJECT);
+  const start = new Date(proj.startDate);
   const now = new Date();
   const days = Math.floor((now - start) / (1000 * 60 * 60 * 24));
-  const el = document.getElementById('statDays');
-  if (el) el.textContent = days;
-})();
+  document.getElementById('statDays').textContent = days;
+  document.getElementById('statAgents').textContent = proj.agentCount;
+  
+  // Count milestones
+  const timeline = getData(STORAGE.timeline, DEFAULT_TIMELINE);
+  const doneCount = timeline.filter(t => t.status === 'done').length;
+  document.getElementById('statMilestones').textContent = doneCount + '/' + timeline.length;
+}
 
-// --- Animate weekly chart bars ---
-(function() {
-  const bars = document.querySelectorAll('[data-h]');
-  bars.forEach(bar => {
-    const h = parseInt(bar.getAttribute('data-h'));
-    bar.style.height = h + 'px';
-  });
-})();
+// --- Timeline Render ---
+function renderTimeline() {
+  const data = getData(STORAGE.timeline, DEFAULT_TIMELINE);
+  const container = document.getElementById('timelineContainer');
+  if (!container) return;
+  
+  container.innerHTML = data.map((item, idx) => `
+    <div class="tl-item" data-id="${item.id}" style="cursor:pointer;" onclick="editTimelineItem('${item.id}')">
+      <div class="tl-dot ${item.status}"></div>
+      <div class="tl-card" style="${item.status==='active'?'border-color:rgba(96,165,250,0.3);':item.status==='plan'?'opacity:0.65;':''}">
+        <div class="tl-meta">
+          <span class="tl-date">${item.date}</span>
+          <span class="tl-badge ${item.status}">${item.status==='done'?'✓ 已完成':item.status==='active'?'⚡ 进行中':'🗓 计划中'}</span>
+        </div>
+        <div class="tl-title">${escapeHtml(item.title)}</div>
+        <div class="tl-desc">${escapeHtml(item.desc)}</div>
+        <div class="tl-tags">
+          ${item.tags.map(t => `<span class="tl-tag">${escapeHtml(t)}</span>`).join('')}
+        </div>
+        <div style="margin-top:10px;text-align:right;">
+          <span style="font-size:11px;color:#64748b;">点击编辑</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  
+  // Update milestone summary
+  const summary = document.getElementById('milestoneSummary');
+  if (summary) {
+    summary.innerHTML = data.slice(0, 7).map(item => `
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="color:${item.status==='done'?'#34d399':item.status==='active'?'#60a5fa':'#475569'};font-size:14px;">${item.status==='done'?'✓':item.status==='active'?'⚡':'○'}</span>
+        <span style="font-size:13px;color:${item.status==='active'?'#93c5fd':'#cbd5e1'};${item.status==='active'?'font-weight:600;':''}">${escapeHtml(item.title)}${item.status==='active'?' ← 当前':''}</span>
+      </div>
+    `).join('');
+  }
+  
+  updateProjectStats();
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// --- Timeline Modal ---
+let editingTimelineId = null;
+function openTimelineModal(id) {
+  editingTimelineId = id || null;
+  const modal = document.getElementById('timelineModal');
+  const data = id ? getData(STORAGE.timeline, DEFAULT_TIMELINE).find(t => t.id === id) : null;
+  
+  document.getElementById('tlDate').value = data?.date || '';
+  document.getElementById('tlStatus').value = data?.status || 'plan';
+  document.getElementById('tlTitle').value = data?.title || '';
+  document.getElementById('tlDesc').value = data?.desc || '';
+  document.getElementById('tlTags').value = data?.tags?.join(', ') || '';
+  document.getElementById('tlModalTitle').textContent = id ? '编辑里程碑' : '添加里程碑';
+  
+  modal.classList.add('open');
+}
+function closeTimelineModal() {
+  document.getElementById('timelineModal').classList.remove('open');
+  editingTimelineId = null;
+}
+function saveTimelineItem() {
+  const date = document.getElementById('tlDate').value.trim();
+  const status = document.getElementById('tlStatus').value;
+  const title = document.getElementById('tlTitle').value.trim();
+  const desc = document.getElementById('tlDesc').value.trim();
+  const tags = document.getElementById('tlTags').value.split(',').map(t => t.trim()).filter(t => t);
+  
+  if (!title) { alert('请填写标题'); return; }
+  
+  let data = getData(STORAGE.timeline, DEFAULT_TIMELINE);
+  if (editingTimelineId) {
+    data = data.map(t => t.id === editingTimelineId ? { ...t, date, status, title, desc, tags } : t);
+  } else {
+    data.push({ id: Date.now().toString(), date, status, title, desc, tags });
+  }
+  setData(STORAGE.timeline, data);
+  renderTimeline();
+  closeTimelineModal();
+}
+function deleteTimelineItem() {
+  if (!editingTimelineId || !confirm('确认删除此里程碑？')) return;
+  let data = getData(STORAGE.timeline, DEFAULT_TIMELINE).filter(t => t.id !== editingTimelineId);
+  setData(STORAGE.timeline, data);
+  renderTimeline();
+  closeTimelineModal();
+}
+function editTimelineItem(id) { openTimelineModal(id); }
+
+// --- Progress Render ---
+function renderProgress() {
+  const data = getData(STORAGE.progress, DEFAULT_PROGRESS);
+  const container = document.getElementById('progressCards');
+  if (!container) return;
+  
+  container.innerHTML = data.map(p => `
+    <div class="prog-card" style="cursor:pointer;" onclick="editProgressCard('${p.id}')">
+      <div class="prog-label">${escapeHtml(p.label)} <span style="font-size:11px;color:#64748b;">(点击编辑)</span></div>
+      <div class="prog-val">${p.value}%</div>
+      <div class="prog-sub">${escapeHtml(p.sub)}</div>
+      <div class="prog-bar-wrap"><div class="prog-bar" style="width:${p.value}%;background:${p.color}"></div></div>
+    </div>
+  `).join('');
+}
+
+function editProgressCard(id) {
+  const data = getData(STORAGE.progress, DEFAULT_PROGRESS);
+  const item = data.find(p => p.id === id);
+  if (!item) return;
+  
+  const newVal = prompt(`编辑 "${item.label}" 进度 (0-100):`, item.value);
+  if (newVal === null) return;
+  const val = parseInt(newVal);
+  if (isNaN(val) || val < 0 || val > 100) { alert('请输入 0-100 的数字'); return; }
+  
+  const newSub = prompt('编辑副标题:', item.sub);
+  if (newSub === null) return;
+  
+  const updated = data.map(p => p.id === id ? { ...p, value: val, sub: newSub } : p);
+  setData(STORAGE.progress, updated);
+  renderProgress();
+}
+
+// --- Modules Render ---
+function renderModules() {
+  const data = getData(STORAGE.modules, DEFAULT_MODULES);
+  const container = document.getElementById('moduleGrid');
+  if (!container) return;
+  
+  container.innerHTML = data.map(m => `
+    <div class="module-row" style="cursor:pointer;" onclick="editModule('${m.id}')">
+      <div class="mod-status-dot mod-${m.status}"></div>
+      <div class="mod-name">${escapeHtml(m.name)}</div>
+      <div class="mod-pct">${m.pct}%</div>
+    </div>
+  `).join('');
+}
+
+function editModule(id) {
+  const data = getData(STORAGE.modules, DEFAULT_MODULES);
+  const item = data.find(m => m.id === id);
+  if (!item) return;
+  
+  const newPct = prompt(`编辑 "${item.name}" 进度 (0-100):`, item.pct);
+  if (newPct === null) return;
+  const pct = parseInt(newPct);
+  if (isNaN(pct) || pct < 0 || pct > 100) { alert('请输入 0-100 的数字'); return; }
+  
+  let status = 'plan';
+  if (pct >= 100) status = 'done';
+  else if (pct > 0) status = 'wip';
+  
+  const updated = data.map(m => m.id === id ? { ...m, pct, status } : m);
+  setData(STORAGE.modules, updated);
+  renderModules();
+}
+
+let editingModuleId = null;
+function openModuleModal(id) {
+  editingModuleId = id || null;
+  const data = id ? getData(STORAGE.modules, DEFAULT_MODULES).find(m => m.id === id) : null;
+  document.getElementById('modName').value = data?.name || '';
+  document.getElementById('modPct').value = data?.pct || 0;
+  document.getElementById('modModalTitle').textContent = id ? '编辑模块' : '添加模块';
+  document.getElementById('moduleModal').classList.add('open');
+}
+function closeModuleModal() {
+  document.getElementById('moduleModal').classList.remove('open');
+  editingModuleId = null;
+}
+function saveModule() {
+  const name = document.getElementById('modName').value.trim();
+  const pct = parseInt(document.getElementById('modPct').value) || 0;
+  if (!name) { alert('请填写模块名称'); return; }
+  
+  let status = 'plan';
+  if (pct >= 100) status = 'done';
+  else if (pct > 0) status = 'wip';
+  
+  let data = getData(STORAGE.modules, DEFAULT_MODULES);
+  if (editingModuleId) {
+    data = data.map(m => m.id === editingModuleId ? { ...m, name, pct, status } : m);
+  } else {
+    data.push({ id: 'm' + Date.now(), name, pct, status });
+  }
+  setData(STORAGE.modules, data);
+  renderModules();
+  closeModuleModal();
+}
+function deleteModule() {
+  if (!editingModuleId || !confirm('确认删除此模块？')) return;
+  let data = getData(STORAGE.modules, DEFAULT_MODULES).filter(m => m.id !== editingModuleId);
+  setData(STORAGE.modules, data);
+  renderModules();
+  closeModuleModal();
+}
+
+// --- Weekly Chart Render ---
+function renderWeeklyChart() {
+  const data = getData(STORAGE.weekly, DEFAULT_WEEKLY);
+  const container = document.getElementById('weeklyChart');
+  if (!container) return;
+  
+  const colors = {
+    normal: 'linear-gradient(180deg,#3b82f6,#1e40af)',
+    ai: 'linear-gradient(180deg,#8b5cf6,#6d28d9)',
+    current: 'linear-gradient(180deg,#f59e0b,#d97706)'
+  };
+  
+  container.innerHTML = data.map((w, idx) => `
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;cursor:pointer;" onclick="editWeek(${idx})">
+      <div style="background:${colors[w.type]};width:100%;border-radius:4px 4px 0 0;height:${w.value}px;transition:height .3s;"></div>
+      <div style="font-size:10px;color:${w.type==='current'?'#94a3b8;font-weight:600;':'#475569'};">${w.week}</div>
+    </div>
+  `).join('');
+}
+
+function editWeek(idx) {
+  const data = getData(STORAGE.weekly, DEFAULT_WEEKLY);
+  const item = data[idx];
+  const newVal = prompt(`编辑 ${item.week} 活跃度 (0-100):`, item.value);
+  if (newVal === null) return;
+  const val = parseInt(newVal);
+  if (isNaN(val) || val < 0 || val > 100) { alert('请输入 0-100 的数字'); return; }
+  
+  data[idx].value = val;
+  setData(STORAGE.weekly, data);
+  renderWeeklyChart();
+}
+
+function openWeeklyChartModal() {
+  const data = getData(STORAGE.weekly, DEFAULT_WEEKLY);
+  const values = data.map(d => d.value).join(',');
+  const newVals = prompt('输入8周的活跃度数值（用逗号分隔）:', values);
+  if (!newVals) return;
+  
+  const parsed = newVals.split(',').map(v => parseInt(v.trim())).filter(v => !isNaN(v));
+  if (parsed.length !== 8) { alert('请输入8个数字'); return; }
+  
+  const updated = data.map((d, i) => ({ ...d, value: parsed[i] || 0 }));
+  setData(STORAGE.weekly, updated);
+  renderWeeklyChart();
+}
+
+// --- Project Settings ---
+function openProjectSettings() {
+  const proj = getData(STORAGE.project, DEFAULT_PROJECT);
+  const newDate = prompt('项目开始日期 (YYYY-MM-DD):', proj.startDate);
+  if (!newDate || !/^\d{4}-\d{2}-\d{2}$/.test(newDate)) { alert('日期格式错误'); return; }
+  
+  const newAgents = prompt('AI 智能体角色数量:', proj.agentCount);
+  if (newAgents === null) return;
+  const agents = parseInt(newAgents);
+  if (isNaN(agents) || agents < 0) { alert('请输入有效数字'); return; }
+  
+  setData(STORAGE.project, { startDate: newDate, agentCount: agents });
+  updateProjectStats();
+}
+
+function openProgressSettings() {
+  openProjectSettings();
+}
 
 // --- Tab Switch ---
 function switchDevTab(name, btn) {
@@ -2383,6 +2512,10 @@ function switchDevTab(name, btn) {
   document.querySelectorAll('.dev-tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('devTab-' + name).classList.add('active');
   btn.classList.add('active');
+  
+  // Render on tab switch
+  if (name === 'timeline') renderTimeline();
+  if (name === 'progress') { renderProgress(); renderModules(); renderWeeklyChart(); }
 }
 
 // --- Doc Storage ---
@@ -2534,9 +2667,20 @@ function handleFiles(files) {
 document.getElementById('uploadModal').addEventListener('click', function(e) {
   if (e.target === this) closeUploadModal();
 });
+document.getElementById('timelineModal').addEventListener('click', function(e) {
+  if (e.target === this) closeTimelineModal();
+});
+document.getElementById('moduleModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModuleModal();
+});
 
 // Init
 renderDocs();
+renderTimeline();
+renderProgress();
+renderModules();
+renderWeeklyChart();
+updateProjectStats();
 
 </script>
 
